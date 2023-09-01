@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("student")
@@ -20,7 +20,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> get(@PathVariable Long id) {
+    public ResponseEntity<Student> get(@PathVariable Integer id) {
         Student student = studentService.find(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -41,7 +41,7 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("get")
-    public HashMap<Long, Student> get () {
+    public List<Student> get () {
         return studentService.getAll();
     }
     @GetMapping
