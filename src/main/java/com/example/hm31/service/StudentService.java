@@ -9,8 +9,7 @@ import java.util.*;
 
 @Service
 public class StudentService {
-
-   private final StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -20,22 +19,27 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student find(Integer id) {
+    public Student find(long id) {
         return studentRepository.findById(id).get();
     }
-    public Student set (Student student) {
-        return  studentRepository.save(student);
-    }
-    public void remove (long id) {
-        studentRepository.deleteAllById(id);
-    }
-    public List<Student> getAll () {
-       return studentRepository.findAll();
+
+    public Student set(Student student) {
+        return studentRepository.save(student);
     }
 
+    public void remove(long id) {
+        studentRepository.deleteById(id);
+    }
 
-    public Collection<Student> findByAge(int age) {
+    public List<Student> getAll() {
+        return studentRepository.findAll();
+    }
+
+    public Collection<Student> findByAge(Integer age) {
         return studentRepository.findByAge(age);
     }
 
+    public List<Student> findByAgeBetween(Integer from, Integer to) {
+        return studentRepository.findByAgeBetween(from, to);
+    }
 }
