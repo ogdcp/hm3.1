@@ -1,5 +1,6 @@
 package com.example.hm31.service;
 
+import com.example.hm31.model.Faculty;
 import com.example.hm31.model.Student;
 import com.example.hm31.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -42,4 +43,8 @@ public class StudentService {
     public List<Student> findByAgeBetween(Integer from, Integer to) {
         return studentRepository.findByAgeBetween(from, to);
     }
+    public Student findFaculty (long id)  {
+        return studentRepository.findByIdOfFaculty(id);
+    }
+
 }

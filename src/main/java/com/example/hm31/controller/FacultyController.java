@@ -48,5 +48,10 @@ public class FacultyController {
         facultyService.remove(id);
         return ResponseEntity.ok().build();
     }
+    @GetMapping ("findStudents")
+    public ResponseEntity<Faculty> getStudent(@RequestParam Long id) {
+
+        return ResponseEntity.ok(facultyService.findStudent(id));
+    }
 
 }

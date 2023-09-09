@@ -47,5 +47,10 @@ public class StudentController {
         studentService.remove(id);
         return ResponseEntity.ok().build();
     }
+    @GetMapping ("findFaculty")
+    public ResponseEntity<Student> getStudent(@RequestParam Long id) {
+
+        return ResponseEntity.ok(studentService.findFaculty(id));
+    }
 
 }
