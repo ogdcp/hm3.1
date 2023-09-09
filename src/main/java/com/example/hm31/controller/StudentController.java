@@ -8,47 +8,49 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("student")
 public class StudentController {
-    private  final StudentService studentService;
+    private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Student> get(@PathVariable Long id) {
-        Student student = studentService.find(id);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
+    @GetMapping
+    public ResponseEntity<List<Student>> get(@RequestParam(required = false) Long id,
+                                             @RequestParam(required = false) Integer to,
+                                             @RequestParam(required = false) Integer from) {
+        if (id != null) {
+            return ResponseEntity.ok(Collections.singletonList(studentService.find(id)));
         }
-        return ResponseEntity.ok(student);
+        if (from != null || to != null) {
+            return ResponseEntity.ok(studentService.findByAgeBetween(from, to));
+        }
+        return ResponseEntity.ok(studentService.getAll());
     }
+
     @PostMapping
-    public Student add (@RequestBody Student student) {
+    public Student add(@RequestBody Student student) {
         return studentService.add(student);
     }
+
     @PutMapping
-    public Student set (@RequestBody Student student) {
+    public Student set(@RequestBody Student student) {
         return studentService.set(student);
     }
+
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> remove (@PathVariable Long id) {
+    public ResponseEntity<Student> remove(@PathVariable Long id) {
         studentService.remove(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("get")
-    public HashMap<Long, Student> get () {
-        return studentService.getAll();
+    @GetMapping ("findFaculty")
+    public ResponseEntity<Student> getStudent(@RequestParam Long id) {
+
+        return ResponseEntity.ok(studentService.findFaculty(id));
     }
-    @GetMapping
-    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
-        if (age > 0) {
-            return ResponseEntity.ok(studentService.findByAge(age));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
-    }
+
 }
