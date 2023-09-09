@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
-    Faculty findFacultyOfStudents(long id);
+//    Faculty findFacultyOfStudents(long id);
     List<Faculty> findByColor(String color);
 
     List<Faculty> findByNameIgnoreCaseOrColorIgnoreCase(String name, String color);
