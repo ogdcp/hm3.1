@@ -42,7 +42,7 @@ public class FacultyService {
     public List<Faculty> findByNameOrColor(String name, String color) {
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
     }
-//    public Faculty findStudent(long id)  {
-//        return facultyRepository.findFacultyOfStudents(id);
-//    }
+    public Faculty findStudent(long id)  {
+        return facultyRepository.findByStudentId(id);
+    }
 }
