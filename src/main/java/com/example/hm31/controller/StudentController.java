@@ -28,22 +28,22 @@ public class StudentController {
     private final StudentService studentService;
     private final AvatarService avatarService;
 
-        public StudentController(StudentService studentService, AvatarService avatarService) {
+    public StudentController(StudentService studentService, AvatarService avatarService) {
         this.studentService = studentService;
-            this.avatarService = avatarService;
+        this.avatarService = avatarService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> get(@RequestParam(required = false) Long id,
-                                             @RequestParam(required = false) Integer to,
-                                             @RequestParam(required = false) Integer from) {
+    public ResponseEntity< Collection<Student> > get(@RequestParam(required = false) Long id,
+                                                     @RequestParam(required = false) Integer to,
+                                                     @RequestParam(required = false) Integer from) {
         if (id != null) {
             return ResponseEntity.ok(Collections.singletonList(studentService.find(id)));
         }
         if (from != null || to != null) {
             return ResponseEntity.ok(studentService.findByAgeBetween(from, to));
         }
-        return ResponseEntity.ok(studentService.getAll());
+        return ResponseEntity.ok((List<Student>) studentService.getAll());
     }
 
     @PostMapping
@@ -61,20 +61,16 @@ public class StudentController {
         studentService.remove(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping ("findFaculty")
-    public ResponseEntity<Student> getStudent(@RequestParam Long id) {
 
-        return ResponseEntity.ok(studentService.findFaculty(id));
-    }
-@PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
-    if (avatar.getSize() > 1024 * 300) {
-        return ResponseEntity.badRequest().body("File is too big");
-    }
+    @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
+        if (avatar.getSize() > 1024 * 300) {
+            return ResponseEntity.badRequest().body("File is too big");
+        }
 
-    avatarService.uploadAvatar(id, avatar);
-    return ResponseEntity.ok().build();
-}
+        avatarService.uploadAvatar(id, avatar);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping(value = "/{id}/avatar/preview")
     public ResponseEntity<byte[]>downloadAvatar(@PathVariable Long id) {
@@ -100,6 +96,10 @@ public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam 
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    public Collection<Student> getAll() {
+        return studentService.getAll();
     }
 }
 
