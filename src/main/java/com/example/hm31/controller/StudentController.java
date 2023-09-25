@@ -34,9 +34,9 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity< Collection<Student> > get(@RequestParam(required = false) Long id,
-                                                     @RequestParam(required = false) Integer to,
-                                                     @RequestParam(required = false) Integer from) {
+    public ResponseEntity<Collection<Student>> get(@RequestParam(required = false) Long id,
+                                                   @RequestParam(required = false) Integer to,
+                                                   @RequestParam(required = false) Integer from) {
         if (id != null) {
             return ResponseEntity.ok(Collections.singletonList(studentService.find(id)));
         }
@@ -73,7 +73,7 @@ public class StudentController {
     }
 
     @GetMapping(value = "/{id}/avatar/preview")
-    public ResponseEntity<byte[]>downloadAvatar(@PathVariable Long id) {
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
         Avatar avatar = avatarService.findAvatar(id);
 
         HttpHeaders headers = new HttpHeaders();
@@ -98,8 +98,26 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/numberOfAllStudents")
+    public ResponseEntity<Long> numberOfAllStudents() {
+        return ResponseEntity.ok(studentService.numberOfAllStudents());
+    }
+
+    @GetMapping("/averageAge")
+    public ResponseEntity<Double> averageAge() {
+        return ResponseEntity.ok(studentService.averageAge());
+    }
+
+    @GetMapping("/lastFiveStudent")
+    public ResponseEntity<List<Student>> lastFiveStudent() {
+        return ResponseEntity.ok(studentService.lastFiveStudent());
+    }
+
+    @GetMapping("/pagingAvatar/{page}/{size}")
+    public ResponseEntity<List<Avatar>> AvatarPaging(@PathVariable Integer page,@PathVariable Integer size) {
+        return ResponseEntity.ok(avatarService.paging(page, size));
+    }
     public Collection<Student> getAll() {
         return studentService.getAll();
     }
 }
-

@@ -4,6 +4,7 @@ import com.example.hm31.model.Avatar;
 import com.example.hm31.model.Student;
 import com.example.hm31.repository.AvatarRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -57,5 +59,9 @@ public class AvatarService {
 
     public Avatar findAvatar(Long id) {
         return avatarRepository.findByStudentId(id).orElseGet(Avatar::new);
+    }
+    public List<Avatar> paging(int page, int size) {
+        PageRequest pageRequest= PageRequest.of(page - 1, size);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
 }
