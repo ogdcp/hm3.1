@@ -1,50 +1,59 @@
 package com.example.hm31.service;
 
 import com.example.hm31.model.Faculty;
+import com.example.hm31.repository.FacultyRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class FacultyService {
-    private final HashMap <Long, Faculty> staffFaculty = new HashMap<>();
+    private final FacultyRepository facultyRepository;
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
-
-    private long idLast = 0;
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty add(Faculty faculty) {
-        faculty.setId(++idLast);
-        staffFaculty.put(faculty.getId(), faculty);
-        return faculty;
+        logger.info("Был вызван метод add");
+        return facultyRepository.save(faculty);
     }
 
     public Faculty find(long id) {
-        return staffFaculty.get(id);
+        logger.info("Был вызван метод find");
+        return facultyRepository.findById(id).get();
     }
-    public Faculty set (Faculty faculty) {
-        if (!staffFaculty.containsKey(faculty.getId())) {
-            return null;
-        }
-        staffFaculty.put(faculty.getId(), faculty);
-        return faculty;
+
+    public Faculty set(Faculty faculty) {
+        logger.info("Был вызван метод set");
+        return facultyRepository.save(faculty);
     }
-    public Faculty remove (long id) {
-        return staffFaculty.remove(id);
+
+    public void remove(long id) {
+        logger.info("Был вызван метод remove");
+        facultyRepository.deleteById(id);
     }
-    public HashMap<Long,Faculty> getAll () {
-        return staffFaculty;
+
+    public List<Faculty> getAll() {
+        logger.info("Был вызван метод getAll");
+        return facultyRepository.findAll();
     }
+
     public Collection<Faculty> findByColor(String color) {
-        ArrayList<Faculty> result = new ArrayList<>();
-        for (Faculty faculty : staffFaculty.values()) {
-            if (Objects.equals(faculty.getColor(), color)) {
-                result.add(faculty);
-            }
-        }
-        return result;
+        logger.info("Был вызван метод findByColor");
+        return facultyRepository.findByColor(color);
+    }
+
+    public List<Faculty> findByNameOrColor(String name, String color) {
+        logger.info("Был вызван метод findByNameOrColor");
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    }
+    public Faculty findStudent(long id)  {
+        logger.info("Был вызван метод findStudent");
+        return facultyRepository.findByStudentId(id);
     }
 }
