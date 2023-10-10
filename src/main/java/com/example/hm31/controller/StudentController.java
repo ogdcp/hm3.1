@@ -120,4 +120,16 @@ public class StudentController {
     public Collection<Student> getAll() {
         return studentService.getAll();
     }
+    @GetMapping("/name/start-from-a")
+    public List<String> startFromA() {
+        return studentService.findAllStartFromA();
+    }
+    @GetMapping("/avg-age")
+    public double avgAge() {
+        return studentService.avgAge();
+    }
+    @GetMapping("/calculate")
+    public int calculate() {
+        return studentService.calculate();
+    }
 }

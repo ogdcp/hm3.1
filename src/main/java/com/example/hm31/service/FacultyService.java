@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
@@ -55,5 +56,12 @@ public class FacultyService {
     public Faculty findStudent(long id)  {
         logger.info("Был вызван метод findStudent");
         return facultyRepository.findByStudentId(id);
+    }
+    public String longestName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .sorted((x, y) -> y.length() - x.length())
+                .collect(Collectors.toList())
+                .get(0);
     }
 }
